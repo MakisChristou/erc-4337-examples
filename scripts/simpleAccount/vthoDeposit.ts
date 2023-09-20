@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import { ERC20_ABI, SIMPLE_ACCOUNT_ABI } from "../../src";
 // @ts-ignore
 import config from "../../config.json";
@@ -41,8 +41,7 @@ export default async function main(
     simpleAccount.execute(
       sa.address,
       0,
-      sa.interface.encodeFunctionData("deposit", [amount])
-      // sa.interface.encodeFunctionData("withdrawAll", [])
+      sa.interface.encodeFunctionData("deposit", [BigNumber.from(amount)])
     ),
     {
       dryRun: opts.dryRun,
