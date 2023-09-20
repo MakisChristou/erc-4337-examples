@@ -2,20 +2,53 @@
 
 # Getting started
 
-A collection of example scripts for working with ERC-4337. **For details on how to use this repository, [check out the docs here](https://docs.stackup.sh/docs/erc-4337-examples).**
+## Install dependencies and generate initial config
+```bash
+yarn install
+yarn run init
+```
 
-The implementation for all commands are located in the [scripts directory](./scripts/). All scripts are built with the following open source packages:
+## Use the following config and replace the entryPoint and the factory with your deployed contracts
+```json
+{
+  "rpcUrl": "http://localhost:3000",
+  "overideBundlerUrl": "http://localhost:4337/rpc",
+  "entryPoint": "0x85FeB66007a203eDa0695Ca833A0FFDD7D879787",
+  "factory": "0xBcb83afEF0826aAe3F79C44C0A324085E0d09330",
+  "signingKey": "",
+  "paymaster": {
+    "rpcUrl": "https://api.stackup.sh/v1/paymaster/API_KEY",
+    "context": {}
+  }
+}
+```
 
-- Sample contracts: [eth-infinitism/account-abstraction](https://github.com/eth-infinitism/account-abstraction)
-- ZeroDev Kernel contracts: [zerodevapp/kernel](https://github.com/zerodevapp/kernel)
-- JS SDK: [userop.js](https://github.com/stackup-wallet/userop.js)
+## Get the account address
 
-> **🚀 Looking for access to hosted infrastructure to build your Smart Accounts? Check out [stackup.sh](https://www.stackup.sh/)!**
+```bash
+yarn run simpleAccount address
+```
 
-# License
+## Simple VET transfer
 
-Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
+```bash
+yarn run simpleAccount transfer --to 0x94C576C6Fdf76EDdCA1e88e4A0169CDcc23e5539 --amount 0.01
+```
 
-# Contact
+## Simple VTHO transfer
 
-Feel free to direct any technical related questions to the `dev-hub` channel in the [Stackup Discord](https://discord.gg/VTjJGvMNyW).
+```bash
+yarn run simpleAccount erc20Transfer --token 0x0000000000000000000000000000456E65726779 --to 0x94C576C6Fdf76EDdCA1e88e4A0169CDcc23e5539  --amount 0.00001
+```
+
+## Deposit an amount of VTHO to EntryPoint from SA
+
+```bash
+yarn run simpleAccount vthoDeposit  --amount 0.001 
+```
+
+## Withdraw all SA's VTHO from EntryPoint
+
+```bash
+yarn run simpleAccount vthoWithdrawAll
+```

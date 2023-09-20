@@ -3,6 +3,8 @@ import { Command } from "commander";
 import address from "./address";
 import transfer from "./transfer";
 import erc20Transfer from "./erc20Transfer";
+import vthoDeposit from "./vthoDeposit";
+import vthoWithdrawAll from "./vthoWithdrawAll";
 import erc20Approve from "./erc20Approve";
 import batchErc20Transfer from "./batchErc20Transfer";
 
@@ -59,6 +61,47 @@ program
   .requiredOption("-amt, --amount <decimal>", "Amount of the token to transfer")
   .action(async (opts) =>
     erc20Transfer(opts.token, opts.to, opts.amount, {
+      dryRun: Boolean(opts.dryRun),
+      withPM: Boolean(opts.withPaymaster),
+      overrideBundlerRpc: opts.overrideBundlerRpc,
+    })
+  );
+
+  program
+  .command("vthoDeposit")
+  .description("Deposit an amount of VTHO into the EntryPoint")
+  .option(
+    "-dr, --dryRun",
+    "Builds the UserOperation without calling eth_sendUserOperation"
+  )
+  .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
+  .option(
+    "-b, --overrideBundlerRpc <url>",
+    "Route all bundler RPC method calls to a separate URL"
+  )
+  .requiredOption("-amt, --amount <decimal>", "Amount of the token to transfer")
+  .action(async (opts) =>
+    vthoDeposit(opts.amount, {
+      dryRun: Boolean(opts.dryRun),
+      withPM: Boolean(opts.withPaymaster),
+      overrideBundlerRpc: opts.overrideBundlerRpc,
+    })
+  );
+
+  program
+  .command("vthoWithdrawAll")
+  .description("Withdraw all VTHO from EntryPoint back to SimpleAccount")
+  .option(
+    "-dr, --dryRun",
+    "Builds the UserOperation without calling eth_sendUserOperation"
+  )
+  .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
+  .option(
+    "-b, --overrideBundlerRpc <url>",
+    "Route all bundler RPC method calls to a separate URL"
+  )
+  .action(async (opts) =>
+    vthoWithdrawAll({
       dryRun: Boolean(opts.dryRun),
       withPM: Boolean(opts.withPaymaster),
       overrideBundlerRpc: opts.overrideBundlerRpc,
