@@ -14,12 +14,13 @@ export default async function main(t: string, amt: string, opts: CLIOpts) {
   const simpleAccount = await Presets.Builder.SimpleAccount.init(
     new ethers.Wallet(config.signingKey),
     config.rpcUrl,
-    { paymasterMiddleware, overrideBundlerRpc: opts.overrideBundlerRpc }
+    { paymasterMiddleware, overrideBundlerRpc: config.overideBundlerUrl, entryPoint: config.entryPoint, factory: config.factory }
   );
   const client = await Client.init(config.rpcUrl, {
-    overrideBundlerRpc: opts.overrideBundlerRpc,
+    overrideBundlerRpc: config.overideBundlerUrl, entryPoint: config.entryPoint
   });
 
+  
   const target = ethers.utils.getAddress(t);
   const value = ethers.utils.parseEther(amt);
   const res = await client.sendUserOperation(
