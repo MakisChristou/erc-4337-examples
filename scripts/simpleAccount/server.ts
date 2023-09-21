@@ -10,50 +10,41 @@ import vthoWithdrawAll from "./vthoWithdrawAll";
 const app = express();
 app.use(bodyParser.json());
 
-app.post("/deploy", async (req, res) => {
-  try {
-    const result = await deploy(req.body.options);
-    res.send(result);
-  } catch (error: any) {
-    res.status(500).send(error.message);
+const respondJsonRpc = (res: any, result: any, error: any) => {
+  if (error) {
+    res.status(500).json({
+      jsonrpc: "2.0",
+      id: 1,
+      error: {
+        code: -32000,
+        message: error.message
+      }
+    });
+  } else {
+    res.json({
+      jsonrpc: "2.0",
+      id: 1,
+      result: result
+    });
   }
-});
+};
 
-app.post("/transfer", async (req, res) => {
-  try {
-    const result = await transfer(req.body.to, req.body.amount, req.body.options);
-    res.send(result);
-  } catch (error: any) {
-    res.status(500).send(error.message);
-  }
-});
+const createRouteHandler = (func: Function) => {
+  return async (req: express.Request, res: express.Response) => {
+    try {
+      const result = await func(req.body);
+      respondJsonRpc(res, result, null);
+    } catch (error: any) {
+      respondJsonRpc(res, null, error);
+    }
+  };
+};
 
-app.post("/erc20Transfer", async (req, res) => {
-  try {
-    const result = await erc20Transfer(req.body.token, req.body.to, req.body.amount, req.body.options);
-    res.send(result);
-  } catch (error: any) {
-    res.status(500).send(error.message);
-  }
-});
-
-app.post("/vthoDeposit", async (req, res) => {
-  try {
-    const result = await vthoDeposit(req.body.amount, req.body.options);
-    res.send(result);
-  } catch (error: any) {
-    res.status(500).send(error.message);
-  }
-});
-
-app.post("/vthoWithdrawAll", async (req, res) => {
-  try {
-    const result = await vthoWithdrawAll(req.body.options);
-    res.send(result);
-  } catch (error: any) {
-    res.status(500).send(error.message);
-  }
-});
+app.post("/deploy", createRouteHandler(({ options }: any) => deploy(options)));
+app.post("/transfer", createRouteHandler(({ to, amount, options }: any) => transfer(to, amount, options)));
+app.post("/erc20Transfer", createRouteHandler(({ token, to, amount, options }: any) => erc20Transfer(token, to, amount, options)));
+app.post("/vthoDeposit", createRouteHandler(({ amount, options }: any) => vthoDeposit(amount, options)));
+app.post("/vthoWithdrawAll", createRouteHandler(({ options }: any) => vthoWithdrawAll(options)));
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

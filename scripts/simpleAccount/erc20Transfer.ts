@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { ERC20_ABI } from "../../src";
 // @ts-ignore
 import config from "../../config.json";
@@ -37,12 +37,17 @@ export default async function main(
   const amount = ethers.utils.parseUnits(amt, decimals);
   console.log(`Transferring ${amt} ${symbol}...`);
 
+  let builder =     simpleAccount.execute(
+    erc20.address,
+    0,
+    erc20.interface.encodeFunctionData("transfer", [to, amount])
+  );
+
+  // builder.setCallGasLimit(BigNumber.from(10_000_000))
+  // builder.setVerificationGasLimit(BigNumber.from(10_000_000))
+
   const res = await client.sendUserOperation(
-    simpleAccount.execute(
-      erc20.address,
-      0,
-      erc20.interface.encodeFunctionData("transfer", [to, amount])
-    ),
+  builder,
     {
       dryRun: opts.dryRun,
       onBuild: (op) => console.log("Signed UserOperation:", op),
@@ -53,4 +58,6 @@ export default async function main(
   console.log("Waiting for transaction...");
   const ev = await res.wait();
   console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
+
+  return ev?.transactionHash
 }

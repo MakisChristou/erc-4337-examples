@@ -56,4 +56,6 @@ export default async function main(
   console.log("Waiting for transaction...");
   const ev = await res.wait();
   console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
+
+  return ev?.transactionHash
 }

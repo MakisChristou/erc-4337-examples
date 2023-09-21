@@ -37,7 +37,7 @@ program
     "Route all bundler RPC method calls to a separate URL"
   )
   .action(async (opts) =>
-    deploy({
+    void deploy({
       dryRun: Boolean(opts.dryRun),
       withPM: Boolean(opts.withPaymaster),
       overrideBundlerRpc: opts.overrideBundlerRpc,
@@ -61,7 +61,7 @@ program
   .requiredOption("-t, --to <address>", "The recipient address")
   .requiredOption("-amt, --amount <eth>", "Amount in ETH to transfer")
   .action(async (opts) =>
-    transfer(opts.to, opts.amount, {
+    void transfer(opts.to, opts.amount, {
       dryRun: Boolean(opts.dryRun),
       withPM: Boolean(opts.withPaymaster),
       overrideBundlerRpc: opts.overrideBundlerRpc,
@@ -84,7 +84,7 @@ program
   .requiredOption("-t, --to <address>", "The recipient address")
   .requiredOption("-amt, --amount <decimal>", "Amount of the token to transfer")
   .action(async (opts) =>
-    erc20Transfer(opts.token, opts.to, opts.amount, {
+    void erc20Transfer(opts.token, opts.to, opts.amount, {
       dryRun: Boolean(opts.dryRun),
       withPM: Boolean(opts.withPaymaster),
       overrideBundlerRpc: opts.overrideBundlerRpc,
@@ -105,7 +105,7 @@ program
   )
   .requiredOption("-amt, --amount <decimal>", "Amount of the token to transfer")
   .action(async (opts) =>
-    vthoDeposit(opts.amount, {
+    void vthoDeposit(opts.amount, {
       dryRun: Boolean(opts.dryRun),
       withPM: Boolean(opts.withPaymaster),
       overrideBundlerRpc: opts.overrideBundlerRpc,
@@ -125,7 +125,7 @@ program
     "Route all bundler RPC method calls to a separate URL"
   )
   .action(async (opts) =>
-    vthoWithdrawAll({
+    void vthoWithdrawAll({
       dryRun: Boolean(opts.dryRun),
       withPM: Boolean(opts.withPaymaster),
       overrideBundlerRpc: opts.overrideBundlerRpc,
