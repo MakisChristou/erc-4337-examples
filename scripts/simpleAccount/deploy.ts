@@ -4,7 +4,7 @@ import { CLIOpts } from "../../src";
 // @ts-ignore
 import config from "../../config.json";
 
-export default async function main(t: string, amt: string, opts: CLIOpts) {
+export default async function main(opts: CLIOpts) {
   const paymasterMiddleware = opts.withPM
     ? Presets.Middleware.verifyingPaymaster(
         config.paymaster.rpcUrl,
@@ -20,10 +20,10 @@ export default async function main(t: string, amt: string, opts: CLIOpts) {
     overrideBundlerRpc: config.overideBundlerUrl, entryPoint: config.entryPoint
   });
 
-  const target = ethers.utils.getAddress(t);
-  const value = ethers.utils.parseEther(amt);
-
-  let builder = simpleAccount.execute(target, value, "0x")
+  // Create a no-op transaction for deployment purposes
+  let builder = simpleAccount.execute(simpleAccount.getSender(), 0, "0x")
+  builder.setCallGasLimit(BigNumber.from(10_000_000))
+  builder.setVerificationGasLimit(BigNumber.from(10_000_000))
 
   const res = await client.sendUserOperation(
     builder,

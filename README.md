@@ -29,6 +29,13 @@ yarn run init
 yarn run simpleAccount address
 ```
 
+## Deploy 
+
+
+```bash
+yarn run simpleAccount deploy
+```
+
 ## Simple VET transfer
 
 ```bash
@@ -58,6 +65,15 @@ yarn run simpleAccount vthoWithdrawAll
 
 ```bash
 yarn run server
+```
+
+## Deploy
+
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"options": {"dryRun": false, "withPM": false}}' \
+http://localhost:3001/deploy
 ```
 
 ## Simple VET transfer

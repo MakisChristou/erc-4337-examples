@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import address from "./address";
+import deploy from "./deploy";
 import transfer from "./transfer";
 import erc20Transfer from "./erc20Transfer";
 import vthoDeposit from "./vthoDeposit";
@@ -21,6 +22,29 @@ program
   .command("address")
   .description("Generate a counterfactual address.")
   .action(address);
+
+
+  program
+  .command("deploy")
+  .description("Deploy SimpleAccount")
+  .option(
+    "-dr, --dryRun",
+    "Builds the UserOperation without calling eth_sendUserOperation"
+  )
+  .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
+  .option(
+    "-b, --overrideBundlerRpc <url>",
+    "Route all bundler RPC method calls to a separate URL"
+  )
+  .action(async (opts) =>
+    deploy({
+      dryRun: Boolean(opts.dryRun),
+      withPM: Boolean(opts.withPaymaster),
+      overrideBundlerRpc: opts.overrideBundlerRpc,
+    })
+  );
+
+
 
 program
   .command("transfer")
