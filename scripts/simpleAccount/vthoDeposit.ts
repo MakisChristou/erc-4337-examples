@@ -34,15 +34,17 @@ export default async function main(
     erc20.symbol(),
     erc20.decimals(),
   ]);
-  const amount = ethers.utils.parseUnits(amt, decimals);
+  const amount = ethers.utils.parseUnits(amt, 18);
   console.log(`Transferring ${amount} ${symbol} ...`);
 
+  let builder = simpleAccount.execute(
+    sa.address,
+    0,
+    sa.interface.encodeFunctionData("deposit", [amount])
+  )
+
     const res = await client.sendUserOperation(
-    simpleAccount.execute(
-      sa.address,
-      0,
-      sa.interface.encodeFunctionData("deposit", [BigNumber.from(amount)])
-    ),
+    builder,
     {
       dryRun: opts.dryRun,
       onBuild: (op) => console.log("Signed UserOperation:", op),

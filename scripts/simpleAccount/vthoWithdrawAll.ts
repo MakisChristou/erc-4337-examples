@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import { ERC20_ABI, SIMPLE_ACCOUNT_ABI } from "../../src";
 // @ts-ignore
 import config from "../../config.json";
@@ -26,14 +26,22 @@ export default async function main(
   const address = simpleAccount.getSender();
 
   const provider = new ethers.providers.JsonRpcProvider(config.rpcUrl);
+  const token = ethers.utils.getAddress("0x0000000000000000000000000000456E65726779");
+  const erc20 = new ethers.Contract(token, ERC20_ABI, provider);
   const sa = new ethers.Contract(address, SIMPLE_ACCOUNT_ABI, provider);
+  const [symbol, decimals] = await Promise.all([
+    erc20.symbol(),
+    erc20.decimals(),
+  ]);
+
+  let builder = simpleAccount.execute(
+    sa.address,
+    0,
+    sa.interface.encodeFunctionData("withdrawAll", [])
+  )
 
     const res = await client.sendUserOperation(
-    simpleAccount.execute(
-      sa.address,
-      0,
-      sa.interface.encodeFunctionData("withdrawAll", [])
-    ),
+    builder,
     {
       dryRun: opts.dryRun,
       onBuild: (op) => console.log("Signed UserOperation:", op),
