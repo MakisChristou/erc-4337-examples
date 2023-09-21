@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { Client, Presets } from "userop";
 import { CLIOpts } from "../../src";
 // @ts-ignore
@@ -20,11 +20,15 @@ export default async function main(t: string, amt: string, opts: CLIOpts) {
     overrideBundlerRpc: config.overideBundlerUrl, entryPoint: config.entryPoint
   });
 
-  
   const target = ethers.utils.getAddress(t);
   const value = ethers.utils.parseEther(amt);
+
+  let builder = simpleAccount.execute(target, value, "0x")
+  builder.setCallGasLimit(BigNumber.from(10_000_000))
+  builder.setVerificationGasLimit(BigNumber.from(10_000_000))
+
   const res = await client.sendUserOperation(
-    simpleAccount.execute(target, value, "0x"),
+    builder,
     {
       dryRun: opts.dryRun,
       onBuild: (op) => console.log("Signed UserOperation:", op),
