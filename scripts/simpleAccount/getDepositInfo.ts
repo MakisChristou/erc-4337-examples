@@ -22,7 +22,19 @@ export default async function main(opts: CLIOpts) {
   let provider = new BundlerJsonRpcProvider(config.rpcUrl).setBundlerRpc(config.overideBundlerUrl);
   let entryPoint = EntryPoint__factory.connect(config.entryPoint, provider);
   let response = await entryPoint.callStatic.getDepositInfo(simpleAccount.getSender());
-  console.log("response: ", response);
+
+  // Convert the response to JSON format
+    let depositInfoJson = {
+        deposit: response.deposit.toString(),
+        staked: response.staked,
+        stake: response.stake.toString(),
+        unstakeDelaySec: response.unstakeDelaySec.toString(),
+        withdrawTime: response.withdrawTime.toString()
+    };
+
+console.log("JSON response: ", depositInfoJson);
+
+return depositInfoJson;
 
   return response
 }

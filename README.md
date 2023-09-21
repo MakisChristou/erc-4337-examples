@@ -114,3 +114,13 @@ curl -X POST \
 -d '{"options": {"dryRun": false, "withPM": false}}' \
 http://localhost:3001/vthoWithdrawAll
 ```
+
+
+## Get SA deposit info from EntryPoint
+
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"options": {"dryRun": false, "withPM": false}}' \
+http://localhost:3001/getDepositInfo
+```

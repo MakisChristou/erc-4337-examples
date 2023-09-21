@@ -2,6 +2,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import deploy from "./deploy";
+import getDepositInfo from "./getDepositInfo";
 import transfer from "./transfer";
 import erc20Transfer from "./erc20Transfer";
 import vthoDeposit from "./vthoDeposit";
@@ -41,6 +42,7 @@ const createRouteHandler = (func: Function) => {
 };
 
 app.post("/deploy", createRouteHandler(({ options }: any) => deploy(options)));
+app.post("/getDepositInfo", createRouteHandler(({ options }: any) => getDepositInfo(options)));
 app.post("/transfer", createRouteHandler(({ to, amount, options }: any) => transfer(to, amount, options)));
 app.post("/erc20Transfer", createRouteHandler(({ token, to, amount, options }: any) => erc20Transfer(token, to, amount, options)));
 app.post("/vthoDeposit", createRouteHandler(({ amount, options }: any) => vthoDeposit(amount, options)));
