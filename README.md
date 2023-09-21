@@ -60,6 +60,11 @@ yarn run simpleAccount vthoDeposit  --amount 0.001
 yarn run simpleAccount vthoWithdrawAll
 ```
 
+## Get SA deposit info from EntryPoint
+
+```bash
+yarn run simpleAccount getDepositInfo
+```
 
 # Server
 

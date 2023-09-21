@@ -2,6 +2,7 @@
 import { Command } from "commander";
 import address from "./address";
 import deploy from "./deploy";
+import getDepositInfo from "./getDepositInfo";
 import transfer from "./transfer";
 import erc20Transfer from "./erc20Transfer";
 import vthoDeposit from "./vthoDeposit";
@@ -44,7 +45,25 @@ program
     })
   );
 
-
+  program
+  .command("getDepositInfo")
+  .description("Get deposit info of SimpleAccount")
+  .option(
+    "-dr, --dryRun",
+    "Builds the UserOperation without calling eth_sendUserOperation"
+  )
+  .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
+  .option(
+    "-b, --overrideBundlerRpc <url>",
+    "Route all bundler RPC method calls to a separate URL"
+  )
+  .action(async (opts) =>
+    void getDepositInfo({
+      dryRun: Boolean(opts.dryRun),
+      withPM: Boolean(opts.withPaymaster),
+      overrideBundlerRpc: opts.overrideBundlerRpc,
+    })
+  );
 
 program
   .command("transfer")
