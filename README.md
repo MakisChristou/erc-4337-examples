@@ -52,3 +52,44 @@ yarn run simpleAccount vthoDeposit  --amount 0.001
 ```bash
 yarn run simpleAccount vthoWithdrawAll
 ```
+
+
+# Server
+
+```bash
+yarn run server
+```
+
+## Simple VET transfer
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"to": "0x94C576C6Fdf76EDdCA1e88e4A0169CDcc23e5539", "amount": "0.01", "options": {"dryRun": false, "withPM": false}}' \
+http://localhost:3001/transfer
+```
+
+## Simple VTHO transfer
+
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"token": "0x0000000000000000000000000000456E65726779", "to": "0x94C576C6Fdf76EDdCA1e88e4A0169CDcc23e5539", "amount": "0.00001", "options": {"dryRun": false, "withPM": false}}' \
+http://localhost:3001/erc20Transfer
+```
+
+
+## Deposit an amount of VTHO to EntryPoint from SA
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"amount": "0.001", "options": {"dryRun": false, "withPM": false}}' \
+http://localhost:3001/vthoDeposit
+```
+
+## Withdraw all SA's VTHO from EntryPoint
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"options": {"dryRun": false, "withPM": false}}' \
+http://localhost:3001/vthoWithdrawAll
+```
