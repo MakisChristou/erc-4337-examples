@@ -124,3 +124,12 @@ curl -X POST \
 -d '{"options": {"dryRun": false, "withPM": false}}' \
 http://localhost:3001/getDepositInfo
 ```
+
+## Get SA VET balance
+
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"options": {"dryRun": false, "withPM": false}}' \
+http://localhost:3001/balance
+```

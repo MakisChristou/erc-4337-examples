@@ -9,6 +9,7 @@ import vthoDeposit from "./vthoDeposit";
 import vthoWithdrawAll from "./vthoWithdrawAll";
 import erc20Approve from "./erc20Approve";
 import batchErc20Transfer from "./batchErc20Transfer";
+import getBalance from "./balance";
 
 const program = new Command();
 
@@ -60,6 +61,26 @@ program
   )
   .action(async (opts) =>
     void getDepositInfo({
+      dryRun: Boolean(opts.dryRun),
+      withPM: Boolean(opts.withPaymaster),
+      overrideBundlerRpc: opts.overrideBundlerRpc,
+    })
+  );
+
+  program
+  .command("balance")
+  .description("Get balance of SimpleAccount")
+  .option(
+    "-dr, --dryRun",
+    "Builds the UserOperation without calling eth_sendUserOperation"
+  )
+  .option("-pm, --withPaymaster", "Use a paymaster for this transaction")
+  .option(
+    "-b, --overrideBundlerRpc <url>",
+    "Route all bundler RPC method calls to a separate URL"
+  )
+  .action(async (opts) =>
+    void getBalance({
       dryRun: Boolean(opts.dryRun),
       withPM: Boolean(opts.withPaymaster),
       overrideBundlerRpc: opts.overrideBundlerRpc,
