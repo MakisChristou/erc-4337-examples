@@ -12,4 +12,6 @@ export default async function main() {
   const address = simpleAccount.getSender();
 
   console.log(`SimpleAccount address: ${address}`);
+
+  return address;
 }

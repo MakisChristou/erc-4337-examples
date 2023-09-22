@@ -22,7 +22,8 @@ program
 program
   .command("address")
   .description("Generate a counterfactual address.")
-  .action(address);
+  .action(async () =>
+    void address());
 
 
   program

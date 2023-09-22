@@ -7,8 +7,11 @@ import transfer from "./transfer";
 import erc20Transfer from "./erc20Transfer";
 import vthoDeposit from "./vthoDeposit";
 import vthoWithdrawAll from "./vthoWithdrawAll";
+import address from "./address";
 
+const cors = require('cors');
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 const respondJsonRpc = (res: any, result: any, error: any) => {
@@ -41,6 +44,7 @@ const createRouteHandler = (func: Function) => {
   };
 };
 
+app.post("/address", createRouteHandler(({ options }: any) => address()));
 app.post("/deploy", createRouteHandler(({ options }: any) => deploy(options)));
 app.post("/getDepositInfo", createRouteHandler(({ options }: any) => getDepositInfo(options)));
 app.post("/transfer", createRouteHandler(({ to, amount, options }: any) => transfer(to, amount, options)));
