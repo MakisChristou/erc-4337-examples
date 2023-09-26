@@ -23,16 +23,7 @@ export default async function main(opts: CLIOpts) {
   let entryPoint = EntryPoint__factory.connect(config.entryPoint, provider);
   let response = await entryPoint.callStatic.getDepositInfo(simpleAccount.getSender());
 
-  // Convert the response to JSON format
-    let depositInfoJson = {
-        deposit: response.deposit.toString(),
-        staked: response.staked,
-        stake: response.stake.toString(),
-        unstakeDelaySec: response.unstakeDelaySec.toString(),
-        withdrawTime: response.withdrawTime.toString()
-    };
+    console.log("EntryPoint Deposit: ", response.deposit.toString());
 
-    console.log("DepositInfo:", depositInfoJson);
-
-    return depositInfoJson;
+    return response.deposit.toString();
 }
